@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../css/style.css" />
 
     <script src="../js/product.js" type="module"></script>
+    
   </head>
 
   <body>
@@ -55,24 +56,33 @@
     </header>
 
     <main class="divider">
-      <section class="product-detail">
-        <h3 id="productBrand"></h3>
+  <section class="product-detail">
 
-        <h2 class="divider" id="productName"></h2>
+    <h3 id="productBrand"></h3>
 
-        <img class="divider" id="productImage" src="" alt="" />
+    <h2 class="divider" id="productName"></h2>
 
-        <p class="product-card__price" id="productPrice"></p>
+    <img
+      class="divider"
+      id="productImage"
+      src=""
+      alt=""
+    />
 
-        <p class="product__color" id="productColor"></p>
+    <p class="product-card__price" id="productPrice"></p>
 
-        <p class="product__description" id="productDesc"></p>
+    <div id="productDiscountContainer"></div>
 
-        <div class="product-detail__add">
-          <button id="addToCart">Add to Cart</button>
-        </div>
-      </section>
-    </main>
+    <p class="product__color" id="productColor"></p>
+
+    <p class="product__description" id="productDesc"></p>
+
+    <div class="product-detail__add">
+      <button id="addToCart">Add to Cart</button>
+    </div>
+
+  </section>
+</main>
 
     <template class="product-list">
       <section class="product-card">

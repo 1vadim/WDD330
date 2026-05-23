@@ -1,38 +1,67 @@
 import { renderListWithTemplate } from "./utils.mjs";
 
 function productCardTemplate(product) {
-    return `
+  //     return `
+  //     <li class="product-card">
+  //     <a href="product_pages/?product=${product.Id}">
+  //       <img src="${product.Image}" alt="Image of ${product.Name}">
+  //       <h2 class="card__brand">${product.Brand.Name}</h2>
+  //       <h3 class="card__name">${product.Name}</h3>
+  //       <p class="product-card__price">$${product.FinalPrice}</p>
+  //     </a>
+  //   </li>`;
+  // }
+
+  const originalPrice = product.SuggestedRetailPrice || product.ListPrice;
+  const discountAmount = originalPrice - product.FinalPrice;
+
+  let priceHTML = `<p class="product-card__price">$${product.FinalPrice}</p>`;
+  let badgeHTML = "";
+
+  if (discountAmount > 0) {
+    const discountPercent = Math.round((discountAmount / originalPrice) * 100);
+
+    priceHTML = `
+            <div class="price-container">
+                <span class="product-card__old-price">$${originalPrice.toFixed(2)}</span>
+                <span class="product-card__price">$${product.FinalPrice}</span>
+            </div>
+        `;
+
+    badgeHTML = `<span class="discount-badge">-${discountPercent}%</span>`;
+  }
+
+  return `
     <li class="product-card">
-    <a href="product_pages/?product=${product.Id}">
-      <img src="${product.Image}" alt="Image of ${product.Name}">
-      <h2 class="card__brand">${product.Brand.Name}</h2>
-      <h3 class="card__name">${product.NameWithoutBrand}</h3>
-      <p class="product-card__price">$${product.FinalPrice}</p>
+    <a href="/product_pages/?product=${product.Id}">
+      <div class="product-card__image-wrapper">
+        <img src="${product.Image}" alt="Image of ${product.Name}">
+        ${badgeHTML} 
+      </div>
+      <h3 class="card__brand">${product.Brand.Name}</h3>
+      <h2 class="card__name">${product.NameWithoutBrand}</h2>
+      ${priceHTML} 
     </a>
   </li>`;
 }
 
 export default class ProductList {
-    constructor(category, dataSource, listElement) {
-        this.category = category;
-        this.dataSource = dataSource;
-        this.listElement = listElement;
-    }
+  constructor(category, dataSource, listElement) {
+    this.category = category;
+    this.dataSource = dataSource;
+    this.listElement = listElement;
+  }
 
-    async init() {
-        const productList = await this.dataSource.getData();
-        this.renderList(productList)
-        console.log(productList)
+  async init() {
+    const productList = await this.dataSource.getData();
+    this.renderList(productList);
+    console.log(productList);
+  }
 
-    }
-
-    renderList(list) {
-        // this.listElement.innerHTML = "";
-        renderListWithTemplate(productCardTemplate, this.listElement, list, "afterbegin", true);
-
-    }
+  renderList(list) {
+    renderListWithTemplate(productCardTemplate, this.listElement, list);
+  }
 }
-
 
 // function renderCartContents() {
 //     const cartItems = getLocalStorage("so-cart");
