@@ -35,7 +35,7 @@ function productCardTemplate(product) {
     <li class="product-card">
     <a href="/product_pages/?product=${product.Id}">
       <div class="product-card__image-wrapper">
-        <img src="${product.Image}" alt="Image of ${product.Name}">
+        <img src="${product.Images.PrimaryMedium}" alt="Image of ${product.Name}">
         ${badgeHTML} 
       </div>
       <h3 class="card__brand">${product.Brand.Name}</h3>
@@ -53,12 +53,27 @@ export default class ProductList {
   }
 
   async init() {
-    const productList = await this.dataSource.getData();
+    const productList = await this.dataSource.getData(this.category);
     this.renderList(productList);
     console.log(productList);
-  }
+    
+    
+    const titleElement = document.querySelector(".category-title");
+        if (titleElement) {
+            titleElement.textContent = `Top Products: ${this.category.charAt(0).toUpperCase() + this.category.slice(1)}`;
+      }
+      
+    }
 
   renderList(list) {
+    if (!this.listElement) {
+      console.error(
+        "Error: listElement (.product-list) was not found in the DOM.",
+      );
+      return;
+    }
+
+      this.listElement.innerHTML = "";
     renderListWithTemplate(productCardTemplate, this.listElement, list);
   }
 }

@@ -40,7 +40,7 @@ export default class ProductDetails {
     document.querySelector("h2").textContent = this.product.NameWithoutBrand;
 
     const img = document.getElementById("productImage");
-    img.src = this.product.Image;
+    img.src = this.product.Images.PrimaryLarge;
     img.alt = this.product.NameWithoutBrand;
 
     const priceElement = document.getElementById("productPrice");
